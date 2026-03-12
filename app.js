@@ -2,18 +2,17 @@
 var TEMPLATE_ID = "DAHDupJXvrA";
 var BASE = "https://api.canva.com/rest/v1";
 
-// Row indices (0-based) in the xlsx for each cost line
-// Adjust these if your sheet has different row positions
+// Row indices (0-based) — row 16 in Excel = index 15 in 0-based
 var ROWS = {
-  cost1: 0,  // Allgemeine Betriebs- und Nebenkosten
-  cost2: 1,  // Instandhaltungsrücklage & Wartungskosten
-  cost3: 2,  // Betriebs- und Nebenkosten WEG
-  cost4: 3,  // Kosten Co-Ownership-Struktur
-  usage1: 4, // Verbrauchsabh. Betriebskosten (Strom/Wasser)
-  usage2: 5, // Professionelle Reinigung
-  usage3: 6, // Wäschepaket
-  reserve1: 7, // Kassenbestand laufende Kosten
-  reserve2: 8, // Rücklage Instandhaltung
+  cost1:    15, // Row 16 — Allgemeine Betriebs- und Nebenkosten
+  cost2:    16, // Row 17 — Instandhaltungsrücklage & Wartungskosten
+  cost3:    17, // Row 18 — Betriebs- und Nebenkosten WEG
+  cost4:    18, // Row 19 — Kosten Co-Ownership-Struktur
+  usage1:   34, // Row 35 — Verbrauchsabh. Betriebskosten (Strom/Wasser)
+  usage2:   35, // Row 36 — Professionelle Reinigung
+  usage3:   36, // Row 37 — Wäschepaket
+  reserve1: 38, // Row 39 — Kassenbestand laufende Kosten
+  reserve2: 39, // Row 40 — Rücklage Instandhaltung
 };
 
 // Column indices (0-based): C=2, D=3
@@ -55,48 +54,16 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 
 // ── STEP 2: Load property name from Canva ────────────────────
-function loadPropertyName() {
-  var raw = document.getElementById("canvaIdInput").value.trim();
-  if (!raw) return;
-
-  // Extract design ID from URL or use directly
-  var designId = raw;
-  var match = raw.match(/\/design\/(DA[a-zA-Z0-9_-]+)/);
-  if (match) designId = match[1];
-
-  document.getElementById("propertyStatus").innerHTML = "<span class='spinner'></span>Loading...";
-
-  // Read text content from page 1 of the property design
-  fetch(BASE + "/designs/" + designId + "/content?content_types=richtexts&pages=1", {
-    headers: { "Authorization": "Bearer " + token }
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(j) {
-    // Extract all text strings from richtexts
-    var texts = [];
-    if (j.richtexts) {
-      j.richtexts.forEach(function(rt) {
-        if (rt.regions) {
-          rt.regions.forEach(function(region) {
-            if (region.text && region.text.trim()) texts.push(region.text.trim());
-          });
-        }
-      });
-    }
-    // First non-empty text = property name (e.g. "Nova Vista")
-    // Find the location line — contains "|" character
-    propertyName = texts[0] || designId;
-    propertyLocation = texts.find(function(t) { return t.indexOf("|") !== -1; }) || "";
-
-    document.getElementById("propertyStatus").innerHTML =
-      "<span class='success'>Loaded: <strong>" + propertyName + "</strong>" +
-      (propertyLocation ? " &mdash; " + propertyLocation : "") + "</span>";
-    tryShowGenerate();
-  })
-  .catch(function(err) {
-    document.getElementById("propertyStatus").innerHTML =
-      "<span class='error'>Could not load: " + err.message + "</span>";
-  });
+function savePropertyName() {
+  var name = document.getElementById("propertyNameInput").value.trim();
+  var loc  = document.getElementById("propertyLocationInput").value.trim();
+  if (!name) return;
+  propertyName     = name;
+  propertyLocation = loc;
+  document.getElementById("propertyStatus").innerHTML =
+    "<span class='success'>Confirmed: <strong>" + name + "</strong>" +
+    (loc ? " &mdash; " + loc : "") + "</span>";
+  tryShowGenerate();
 }
 
 // ── STEP 3: Upload xlsx ──────────────────────────────────────
