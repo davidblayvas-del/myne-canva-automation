@@ -12,9 +12,10 @@
     <div class="header">
       <div class="logo">MYNE</div>
       <h1>Canva Automation</h1>
-      <p>Upload your property sheet and generate a filled Wirtschaftsplan in one click.</p>
+      <p>Fill the Wirtschaftsplan template automatically from your property file and cost sheet.</p>
     </div>
 
+    <!-- Step 1: Token -->
     <div class="card">
       <div class="step-label">Step 1</div>
       <h2>Canva API Token</h2>
@@ -23,26 +24,32 @@
       <p class="hint" id="tokenStatus"></p>
     </div>
 
+    <!-- Step 2: Property Canva ID -->
     <div class="card">
       <div class="step-label">Step 2</div>
-      <h2>Upload Property Sheet</h2>
-      <p class="hint">Upload your .xlsx file — all rows are loaded automatically.</p>
-      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFile(event)" />
+      <h2>Property Canva Design ID</h2>
+      <p class="hint" style="margin-bottom:12px">Paste the Canva URL or Design ID of the property file (e.g. DAxxxxxx)</p>
+      <input type="text" id="canvaIdInput" placeholder="https://www.canva.com/design/DAxxxxxx/... or just DAxxxxxx" />
+      <button onclick="loadPropertyName()">Load Property Name</button>
+      <p class="hint" id="propertyStatus"></p>
+    </div>
+
+    <!-- Step 3: Upload xlsx -->
+    <div class="card">
+      <div class="step-label">Step 3</div>
+      <h2>Upload Cost Sheet (.xlsx)</h2>
+      <p class="hint" style="margin-bottom:12px">Upload the xlsx file — costs are read from column C (monthly) and column D (annual).</p>
+      <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(event)" />
       <div id="preview"></div>
     </div>
 
+    <!-- Step 4: Generate -->
     <div class="card" id="step-generate" style="display:none">
-      <div class="step-label">Step 3</div>
-      <h2>Generate Canva Design</h2>
-      <p>Property loaded: <strong id="propertyName"></strong></p>
+      <div class="step-label">Step 4</div>
+      <h2>Generate Wirtschaftsplan</h2>
+      <div id="summaryBox" style="background:#f7f7f9;border-radius:10px;padding:16px;margin-bottom:20px;font-size:13px;line-height:2"></div>
       <button id="generateBtn" onclick="generate()">&#9654; Create Canva Design</button>
       <div id="result"></div>
-    </div>
-
-    <div class="card" id="step-table" style="display:none">
-      <div class="step-label">Step 3</div>
-      <h2>Select a property to generate</h2>
-      <div id="tableContainer"></div>
     </div>
 
   </div>
