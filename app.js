@@ -66,16 +66,31 @@ function loadPropertyName() {
 
   document.getElementById("propertyStatus").innerHTML = "<span class='spinner'></span>Loading...";
 
-  fetch(BASE + "/designs/" + designId, {
+  // Read text content from page 1 of the property design
+  fetch(BASE + "/designs/" + designId + "/content?content_types=richtexts&pages=1", {
     headers: { "Authorization": "Bearer " + token }
   })
   .then(function(r) { return r.json(); })
   .then(function(j) {
-    if (!j.design) throw new Error("Design not found");
-    propertyName = j.design.title || designId;
-    propertyLocation = designId; // store ID as location reference
+    // Extract all text strings from richtexts
+    var texts = [];
+    if (j.richtexts) {
+      j.richtexts.forEach(function(rt) {
+        if (rt.regions) {
+          rt.regions.forEach(function(region) {
+            if (region.text && region.text.trim()) texts.push(region.text.trim());
+          });
+        }
+      });
+    }
+    // First non-empty text = property name (e.g. "Nova Vista")
+    // Find the location line — contains "|" character
+    propertyName = texts[0] || designId;
+    propertyLocation = texts.find(function(t) { return t.indexOf("|") !== -1; }) || "";
+
     document.getElementById("propertyStatus").innerHTML =
-      "<span class='success'>Property loaded: <strong>" + propertyName + "</strong></span>";
+      "<span class='success'>Loaded: <strong>" + propertyName + "</strong>" +
+      (propertyLocation ? " &mdash; " + propertyLocation : "") + "</span>";
     tryShowGenerate();
   })
   .catch(function(err) {
@@ -148,9 +163,9 @@ function generate() {
   var totalA = a1 + a2 + a3 + a4;
 
   var ops = [
-    op(ELEMENTS.immoNameCover,    propertyName),
-    op(ELEMENTS.locationLineCover, propertyName),
-    op(ELEMENTS.locationP3,       propertyName),
+    op(ELEMENTS.immoNameCover,     propertyName),
+    op(ELEMENTS.locationLineCover, propertyLocation || propertyName),
+    op(ELEMENTS.locationP3,        propertyLocation || propertyName),
     op(ELEMENTS.monthlyCosts,     fmt(m1)+"\n\n"+fmt(m2)+"\n\n"+fmt(m3)+"\n\n"+fmt(m4)),
     op(ELEMENTS.annualCosts,      fmt(a1)+"\n\n"+fmt(a2)+"\n\n"+fmt(a3)+"\n\n"+fmt(a4)),
     op(ELEMENTS.totalMonthly,     fmt(totalM)),
