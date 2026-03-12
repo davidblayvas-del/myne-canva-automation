@@ -106,7 +106,10 @@ function handleFile(e) {
   var reader = new FileReader();
   reader.onload = function(ev) {
     var wb = XLSX.read(new Uint8Array(ev.target.result), { type: "array" });
-    var ws = wb.Sheets[wb.SheetNames[0]];
+    // Always use the "M&S Output" tab, fall back to first sheet if not found
+    var sheetName = wb.SheetNames.find(function(n) { return n.trim() === "M&S Output"; }) || wb.SheetNames[0];
+    var ws = wb.Sheets[sheetName];
+    document.getElementById("preview").innerHTML = "<span class='success'>Reading tab: <strong>" + sheetName + "</strong></span>";
     // Get as array of arrays (raw rows)
     var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
     sheetData = rows;
