@@ -2,22 +2,23 @@
 var TEMPLATE_ID = "DAHDupJXvrA";
 var BASE = "https://api.canva.com/rest/v1";
 
-// Row indices (0-based) — verify these match your M&S Output tab exactly
+// Row indices (0-based): Excel row 15 = index 14
 var ROWS = {
   cost1:    14, // Row 15 — Allgemeine Betriebs- und Nebenkosten
-  cost2:    15, // Row 16 — Instandhaltungsrücklage & Wartungskosten
+  cost2:    15, // Row 16 — Instandhaltungsrücklage
   cost3:    16, // Row 17 — Betriebs- und Nebenkosten WEG
-  cost4:    17, // Row 18 — Kosten Co-Ownership-Struktur
-  usage1:   33, // Row 34 — Verbrauchsabh. Betriebskosten (Strom/Wasser)
-  usage2:   34, // Row 35 — Professionelle Reinigung
-  usage3:   35, // Row 36 — Wäschepaket
-  reserve1: 37, // Row 38 — Kassenbestand laufende Kosten
-  reserve2: 38, // Row 39 — Rücklage Instandhaltung
+  cost4:    17, // Row 18 — Kosten Co-Ownership
+  usage1:   24, // Row 25 — Verbrauchsabh. (Strom/Wasser)
+  usage2:   25, // Row 26 — Professionelle Reinigung
+  usage3:   26, // Row 27 — Wäschepaket
+  reserve1: 38, // Row 39 — Kassenbestand laufende Kosten
+  reserve2: 39  // Row 40 — Rücklage Instandhaltung
 };
 
-var COL_MONTHLY = 2; // Column C (index 2)
-var COL_ANNUAL  = 3; // Column D (index 3)
-var COL_USAGE   = 2; // Column C (index 2) — usage costs also in column C
+var COL_MONTHLY  = 2; // Column C (index 2)
+var COL_ANNUAL   = 3; // Column D (index 3)
+var COL_USAGE    = 2; // Column C (index 2) — usage costs in column C
+var COL_RESERVE  = 3; // Column D (index 3) — reserves in column D
 
 var ELEMENTS = {
   immoNameCover:     "PBxwy6ZcMmJm4Dx4-LBX2QHSGd0nnLdLw",
@@ -101,8 +102,8 @@ function tryShowGenerate() {
   var u1 = getVal(ROWS.usage1,   COL_USAGE);
   var u2 = getVal(ROWS.usage2,   COL_USAGE);
   var u3 = getVal(ROWS.usage3,   COL_USAGE);
-  var r1 = getVal(ROWS.reserve1, COL_USAGE);
-  var r2 = getVal(ROWS.reserve2, COL_USAGE);
+  var r1 = getVal(ROWS.reserve1, COL_RESERVE);
+  var r2 = getVal(ROWS.reserve2, COL_RESERVE);
 
   document.getElementById("summaryBox").innerHTML =
     "<strong>Property:</strong> " + propertyName + "<br>" +
@@ -145,8 +146,8 @@ function generate() {
   var u1 = getVal(ROWS.usage1,   COL_USAGE);
   var u2 = getVal(ROWS.usage2,   COL_USAGE);
   var u3 = getVal(ROWS.usage3,   COL_USAGE);
-  var r1 = getVal(ROWS.reserve1, COL_USAGE);
-  var r2 = getVal(ROWS.reserve2, COL_USAGE);
+  var r1 = getVal(ROWS.reserve1, COL_RESERVE);
+  var r2 = getVal(ROWS.reserve2, COL_RESERVE);
 
   var ops = [
     op(ELEMENTS.immoNameCover,     propertyName),
