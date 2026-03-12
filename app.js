@@ -15,8 +15,9 @@ var ROWS = {
   reserve2: 39
 };
 
-var COL_MONTHLY = 2; // Column C
-var COL_ANNUAL  = 3; // Column D
+var COL_MONTHLY = 3; // Column D
+var COL_ANNUAL  = 2; // Column C
+var COL_USAGE   = 4; // Column E (usage costs per night/stay)
 
 var ELEMENTS = {
   immoNameCover:     "PBxwy6ZcMmJm4Dx4-LBX2QHSGd0nnLdLw",
@@ -97,11 +98,11 @@ function tryShowGenerate() {
   var a2 = getVal(ROWS.cost2,    COL_ANNUAL);
   var a3 = getVal(ROWS.cost3,    COL_ANNUAL);
   var a4 = getVal(ROWS.cost4,    COL_ANNUAL);
-  var u1 = getVal(ROWS.usage1,   COL_MONTHLY);
-  var u2 = getVal(ROWS.usage2,   COL_MONTHLY);
-  var u3 = getVal(ROWS.usage3,   COL_MONTHLY);
-  var r1 = getVal(ROWS.reserve1, COL_MONTHLY);
-  var r2 = getVal(ROWS.reserve2, COL_MONTHLY);
+  var u1 = getVal(ROWS.usage1,   COL_USAGE);
+  var u2 = getVal(ROWS.usage2,   COL_USAGE);
+  var u3 = getVal(ROWS.usage3,   COL_USAGE);
+  var r1 = getVal(ROWS.reserve1, COL_USAGE);
+  var r2 = getVal(ROWS.reserve2, COL_USAGE);
 
   document.getElementById("summaryBox").innerHTML =
     "<strong>Property:</strong> " + propertyName + "<br>" +
@@ -141,11 +142,11 @@ function generate() {
   var a2 = getVal(ROWS.cost2,    COL_ANNUAL);
   var a3 = getVal(ROWS.cost3,    COL_ANNUAL);
   var a4 = getVal(ROWS.cost4,    COL_ANNUAL);
-  var u1 = getVal(ROWS.usage1,   COL_MONTHLY);
-  var u2 = getVal(ROWS.usage2,   COL_MONTHLY);
-  var u3 = getVal(ROWS.usage3,   COL_MONTHLY);
-  var r1 = getVal(ROWS.reserve1, COL_MONTHLY);
-  var r2 = getVal(ROWS.reserve2, COL_MONTHLY);
+  var u1 = getVal(ROWS.usage1,   COL_USAGE);
+  var u2 = getVal(ROWS.usage2,   COL_USAGE);
+  var u3 = getVal(ROWS.usage3,   COL_USAGE);
+  var r1 = getVal(ROWS.reserve1, COL_USAGE);
+  var r2 = getVal(ROWS.reserve2, COL_USAGE);
 
   var ops = [
     op(ELEMENTS.immoNameCover,     propertyName),
