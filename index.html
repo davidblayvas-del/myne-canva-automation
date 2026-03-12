@@ -24,13 +24,14 @@
       <p class="hint" id="tokenStatus"></p>
     </div>
 
-    <!-- Step 2: Property Canva ID -->
+    <!-- Step 2: Property Name -->
     <div class="card">
       <div class="step-label">Step 2</div>
-      <h2>Property Canva Design ID</h2>
-      <p class="hint" style="margin-bottom:12px">Paste the Canva URL or Design ID of the property file (e.g. DAxxxxxx)</p>
-      <input type="text" id="canvaIdInput" placeholder="https://www.canva.com/design/DAxxxxxx/... or just DAxxxxxx" />
-      <button onclick="loadPropertyName()">Load Property Name</button>
+      <h2>Property Name & Location</h2>
+      <p class="hint" style="margin-bottom:12px">Enter the property name and location exactly as it should appear in the Canva design.</p>
+      <input type="text" id="propertyNameInput" placeholder="e.g. Nova Vista" style="margin-bottom:10px" />
+      <input type="text" id="propertyLocationInput" placeholder="e.g. Nova Santa Ponsa | Mallorca | Spanien" />
+      <button onclick="savePropertyName()" style="margin-top:10px">Confirm</button>
       <p class="hint" id="propertyStatus"></p>
     </div>
 
