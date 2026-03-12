@@ -57,13 +57,16 @@ window.addEventListener("DOMContentLoaded", function() {
 function savePropertyName() {
   var name = document.getElementById("propertyNameInput").value.trim();
   var loc  = document.getElementById("propertyLocationInput").value.trim();
-  if (!name) return;
+  if (!name) { alert("Please enter a property name."); return; }
   propertyName     = name;
   propertyLocation = loc;
   document.getElementById("propertyStatus").innerHTML =
     "<span class='success'>Confirmed: <strong>" + name + "</strong>" +
     (loc ? " &mdash; " + loc : "") + "</span>";
-  tryShowGenerate();
+  // Force show Step 4 if sheet is already loaded
+  if (sheetData.length) {
+    tryShowGenerate();
+  }
 }
 
 // ── STEP 3: Upload xlsx ──────────────────────────────────────
@@ -90,6 +93,7 @@ function handleFile(e) {
 // ── Show Step 4 when both are ready ─────────────────────────
 function tryShowGenerate() {
   if (!propertyName || !sheetData.length) return;
+  document.getElementById("step-generate").style.display = "block";
 
   var m1 = getVal(ROWS.cost1, COL_MONTHLY);
   var m2 = getVal(ROWS.cost2, COL_MONTHLY);
