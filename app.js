@@ -2,22 +2,22 @@
 var TEMPLATE_ID = "DAHDupJXvrA";
 var BASE = "https://api.canva.com/rest/v1";
 
-// Row indices (0-based): Excel row 16 = index 15
+// Row indices (0-based) — verify these match your M&S Output tab exactly
 var ROWS = {
-  cost1:    15,
-  cost2:    16,
-  cost3:    17,
-  cost4:    18,
-  usage1:   34,
-  usage2:   35,
-  usage3:   36,
-  reserve1: 38,
-  reserve2: 39
+  cost1:    14, // Row 15 — Allgemeine Betriebs- und Nebenkosten
+  cost2:    15, // Row 16 — Instandhaltungsrücklage & Wartungskosten
+  cost3:    16, // Row 17 — Betriebs- und Nebenkosten WEG
+  cost4:    17, // Row 18 — Kosten Co-Ownership-Struktur
+  usage1:   33, // Row 34 — Verbrauchsabh. Betriebskosten (Strom/Wasser)
+  usage2:   34, // Row 35 — Professionelle Reinigung
+  usage3:   35, // Row 36 — Wäschepaket
+  reserve1: 37, // Row 38 — Kassenbestand laufende Kosten
+  reserve2: 38, // Row 39 — Rücklage Instandhaltung
 };
 
-var COL_MONTHLY = 3; // Column D
-var COL_ANNUAL  = 2; // Column C
-var COL_USAGE   = 4; // Column E (usage costs per night/stay)
+var COL_MONTHLY = 2; // Column C (index 2)
+var COL_ANNUAL  = 3; // Column D (index 3)
+var COL_USAGE   = 2; // Column C (index 2) — usage costs also in column C
 
 var ELEMENTS = {
   immoNameCover:     "PBxwy6ZcMmJm4Dx4-LBX2QHSGd0nnLdLw",
